@@ -14,23 +14,6 @@ require('./models/Post');
 //
 // );
 
-// const GoogleAuth = Express.Router();
-//
-// GoogleAuth.get(
-//   '/auth/google',
-//   passport.authenticate('google', { scope: ['profile'] })
-// );
-//
-// GoogleAuth.get(
-//   '/auth/google/callback',
-//   passport.authenticate('google', { failureRedirect: '/login' }),
-//   (req, res) => {
-//     // Successful authentication, redirect home.
-//     console.log(' Successful authentication ');
-//     res.redirect('/');
-//   }
-// );
-
 module.exports = app => {
   // Google
   passport.use(
@@ -75,7 +58,6 @@ module.exports = app => {
   });
 
   passport.deserializeUser(function(id, done) {
-    console.log(' deserializing .... ');
     console.log(' deserializeUser ', id);
     done(null, id);
   });
@@ -94,21 +76,10 @@ module.exports = app => {
     (req, res) => {
       // Successful authentication, redirect home.
       console.log(' Successful authentication ');
-      res.redirect('/api/current_user');
+      // res.redirect('/api/current_user');
+      res.redirect('http://localhost:3000');
     }
   );
-
-  // app.use(express.session({ secret: 'addsfgd' }));
-
-  app.get('/test', (req, res) => {
-    console.log(' req.user ', req.user);
-    res.send(req.user);
-  });
-
-  app.get('/logout', (req, res) => {
-    req.logout();
-    res.redirect('/');
-  });
 
   // app.use(FacebookAuth);
 };
