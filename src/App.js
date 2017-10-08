@@ -38,9 +38,11 @@ const Navbar = () => {
               Board
             </a>
           </li>
+        </ul>
+        <ul className="navbar-nav">
           <li className="nav-item">
-            <a className="nav-link" href="/board2">
-              Board2
+            <a className="nav-link" href="/login">
+              Sign In
             </a>
           </li>
         </ul>
