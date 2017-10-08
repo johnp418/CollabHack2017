@@ -7,6 +7,7 @@ const authConfig = require('./config');
 const app = new Express();
 const port = 5000;
 
+const userRouter = require('./Routes/users');
 const postRouter = require('./Routes/posts');
 const commentRouter = require('./Routes/comments');
 
@@ -22,6 +23,7 @@ app.use(cookieSession({ maxAge: 1000 * 100000, keys: ['hi'] }));
 
 // Register passport
 authApp(app);
+userRouter(app);
 
 app.use('/posts', postRouter);
 app.use('/comments', commentRouter);

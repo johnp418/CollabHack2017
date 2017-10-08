@@ -94,7 +94,7 @@ module.exports = app => {
     (req, res) => {
       // Successful authentication, redirect home.
       console.log(' Successful authentication ');
-      res.redirect('/test');
+      res.redirect('/api/current_user');
     }
   );
 
