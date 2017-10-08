@@ -1,0 +1,37 @@
+#add-button {
+	margin-buttom: 10px;
+}
+
+th, td {
+	text-align: center;
+}
+
+td {
+	display: table-cell;
+	vertical-align: middle;
+}
+
+.category {
+	width: 5%;
+}
+
+.title {
+	width: 60%;
+}
+
+.price {
+	width: 5%;
+}
+
+.location {
+	width: 10%;
+}
+
+.date {
+	width: 10%;
+}
+
+.stat {
+	width: 10%;
+}
+
