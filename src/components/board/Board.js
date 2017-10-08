@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
+import $ from 'jquery';
 import './Board.css';
-// import $ from "jquery";
 
 class Board extends Component {
 	constructor(props) {
@@ -60,12 +60,17 @@ class Board extends Component {
 		this.setState({ data: data })
 	}
 	handlePostSubmit(post) {
+		console.log(post);
+		$("#addPost").modal("hide");
 		let data = this.state.data;
 		data.push(post);
 		data.sort((a,b) => {
-			return b["date"] - a["date"];
+			a = new Date(a["date"]);
+			b = new Date(b["date"]);
+			return a > b ? -1 : a < b ? 1 : 0;
 		});
 		this.setState({ data: data });
+		console.log(this.state.data);
 	}
 	render() {
 		return (
@@ -158,7 +163,7 @@ class BoardAddForm extends Component {
 		this.state = {
 			category: ["Sell", "Buy"],
 			post: {
-				"category": "",
+				"category": "Sell",
         		"title": "",
         		"description": "",
         		"price": 0,
@@ -172,37 +177,60 @@ class BoardAddForm extends Component {
 		};
 	}
 	handleFormChange(e) {
-		if (e.currentTarget.getAttribute("id") == "category") {
+		if (e.currentTarget.getAttribute("id") == "category-input") {
 			this.state.post["category"] = e.currentTarget.value;
-		} else if (e.currentTarget.getAttribute("id") == "location") {
+		} else if (e.currentTarget.getAttribute("id") == "location-input") {
 			this.state.post["location"] = e.currentTarget.value;
-		} else if (e.currentTarget.getAttribute("id") == "title") {
+		} else if (e.currentTarget.getAttribute("id") == "title-input") {
 			this.state.post["title"] = e.currentTarget.value;
-		} else if (e.currentTarget.getAttribute("id") == "description") {
+		} else if (e.currentTarget.getAttribute("id") == "description-input") {
 			this.state.post["description"] = e.currentTarget.value;
-		} else if (e.currentTarget.getAttribute("id") == "price") {
+		} else if (e.currentTarget.getAttribute("id") == "price-input") {
 			this.state.post["price"] = parseFloat(e.currentTarget.value).toFixed(2);
 		}
 		this.setState({ post: this.state.post });
+		console.log(this.state.post);
 	}
 	handlePostSubmit(e) {
 		e.preventDefault();
-		this.state.post["date"] = new Date().toISOString();
+		let data = {
+			"category": this.state.post["category"],
+    		"title": this.state.post["title"],
+    		"description": this.state.post["description"],
+    		"price": parseFloat(this.state.post["price"]).toFixed(2),
+    		"location": this.state.post["location"],
+    		"date": new Date().toISOString(),
+    		"stat": {
+    			"views": 0,
+    			"replies": 0
+    		}
+		}
+		this.state.post["category"] = "";
+		this.state.post["title"] = "";
+		this.state.post["description"] = "";
+		this.state.post["price"] = 0;
+		this.state.post["location"] = "";
+		this.state.post["date"] = "";
 		this.setState({ post: this.state.post });
-		this.props.onAddition(this.state.post);
+		$("#category-input").val("Sell");
+		$("#location-input").val("");
+		$("#title-input").val("");
+		$("#description-input").val("");
+		$("#price-input").val("");
+		this.props.onAddition(data);
 	}
 	render() {
 		const title = this.state.post["title"];
 		const isEnabled = title.length > 0;
 		return (
 			<div>
-				<form onSubmit={this.handlePostSubmit.bind(this)}>
+				<form id="postForm" onSubmit={this.handlePostSubmit.bind(this)}>
 					<div className="row">
 						<div className="col-md-6 mb-3">
 							<div className="input-group mb-2 mb-sm-0">
 								<label className="sr-only" htmlFor="category">Category</label>
 								<div className="input-group-addon">Category</div>
-								<select onChange={e => this.handleFormChange(e)} className="custom-select" id="category">
+								<select onChange={e => this.handleFormChange(e)} className="custom-select" id="category-input">
 									{this.state.category.map(elem => {
 										return <option key={elem} value={elem}>{elem}</option>
 									})}
@@ -213,7 +241,7 @@ class BoardAddForm extends Component {
 							<div className="input-group mb-2 mb-sm-0">
 								<label className="sr-only" htmlFor="category">Location</label>
 								<div className="input-group-addon">Location</div>
-								<input onChange={e => this.handleFormChange(e)} type="text" className="form-control" id="location" placeholder="Location"/>
+								<input onChange={e => this.handleFormChange(e)} type="text" className="form-control" id="location-input" placeholder="Location"/>
 							</div>
 						</div>
 					</div>
@@ -221,21 +249,21 @@ class BoardAddForm extends Component {
 						<div className="input-group mb-2 mb-sm-0">
 							<label className="sr-only" htmlFor="title">Title</label>
 							<div className="input-group-addon">Title</div>
-							<input onChange={e => this.handleFormChange(e)} type="text" className="form-control" id="title" placeholder="Title"/>
+							<input onChange={e => this.handleFormChange(e)} type="text" className="form-control" id="title-input" placeholder="Title"/>
 						</div>
 					</div>
 					<div className="form-group">
 						<div className="input-group mb-2 mb-sm-0">
 							<label className="sr-only" htmlFor="title">Description</label>
 							<div className="input-group-addon">Description</div>
-							<textarea onChange={e => this.handleFormChange(e)} type="text" className="form-control" rows="5" id="description" placeholder="Description"/>
+							<textarea onChange={e => this.handleFormChange(e)} type="text" className="form-control" rows="5" id="description-input" placeholder="Description"/>
 						</div>
 					</div>
 					<div className="form-group">
 						<div className="input-group mb-2 mb-sm-0">
 							<label className="sr-only" htmlFor="title">Price</label>
 							<div className="input-group-addon">$</div>
-							<input onChange={e => this.handleFormChange(e)} type="number" min="0.01" step="0.01" className="form-control" id="price" placeholder="0.00"/>
+							<input onChange={e => this.handleFormChange(e)} type="number" min="0.01" step="0.01" className="form-control" id="price-input" placeholder="0.00"/>
 						</div>
 					</div>
 					<button disabled={!isEnabled} type="submit" className="btn btn-primary btn-lg btn-block">Submit</button>
