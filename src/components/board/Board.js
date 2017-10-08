@@ -103,23 +103,23 @@ class Board extends Component {
 						<p class="lead">Feel free to buy or sell.</p>
 						<form onSubmit={this.handleSearch.bind(this)}>
 							<div class="row">
-								<div class="col">
+								<div class="col-2">
 									<select className="custom-select">
 										<option>Choose Category</option>
 										<option value="Buy">Buy</option>
 										<option value="Sell">Sell</option>
 									</select>
 								</div>
-								<div class="col">
+								<div class="col-2">
 									<input type="text" class="form-control" placeholder="Title"/>
 								</div>
-								<div class="col">
+								<div class="col-2">
 									<input type="number" className="form-control" placeholder="Max Price"/>
 								</div>
-								<div class="col">
+								<div class="col-2">
 									<input type="text" className="form-control" placeholder="Location"/>
 								</div>
-								<div class="col">
+								<div class="col-2">
 									<input type="date" className="form-control" placeholder="Date"/>
 								</div>
 								<button type="submit" className="btn btn-succuss">Search</button>
@@ -158,9 +158,9 @@ class BoardTable extends Component {
 
 	render() {
 		return (
-			<div>
+			<div className="container">
 				<table className="table table-sm table-hover">
-					<thead className="thead-default">
+					<thead className="">
 						<tr>
 							{this.props.headers.map(header => {
 								if (header == "Category") {
@@ -185,7 +185,7 @@ class BoardTable extends Component {
 								<tr key={index}>
 									<td className="category">{row["category"] == "Sell" ? 
 										<span className="badge badge-success">{row["category"]}</span> :
-										<span className="badge badge-primary">{row["category"]}</span>
+										<span className="badge badge-warning">{row["category"]}</span>
 									}</td>
 									<td className="title"><a href={"/boards/" + row["id"]}>{row["title"]}</a></td>
 									<td className="price">${parseFloat(row["price"]).toFixed(2)}</td>

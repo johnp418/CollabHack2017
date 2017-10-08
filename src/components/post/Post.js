@@ -12,18 +12,6 @@ class Post extends Component {
 		super(props);
 		this.state = {
 			post: {},
-			// {
-   //      		"id": 0,
-   //      		"category": "",
-   //      		"title": "",
-   //      		"price": 0,
-   //      		"location": "",
-   //      		"date": "",
-   //      		"stat": {
-   //      			"views": 0,
-   //      			"replies": 0
-   //      		}
-   //      	}
    			loading: true
 		};
 	}
@@ -84,14 +72,24 @@ class Post extends Component {
         this.setState({ post: post });
 	}
 	render() {
-		console.log(this.state.post);
 		return (
-			<div>
-				This is {this.props.match.params.id} Individual post
-				<Loader />
+			<div className="card">
+				<div className="card-body">
+					{this.state.post["category"] == "Sell" ? 
+						<h4 className="card-title">{this.state.post["title"]} <span className="badge badge-success">{this.state.post["category"]}</span></h4> :
+						<h4 className="card-title">{this.state.post["title"]} <span className="badge badge-warning">{this.state.post["category"]}</span></h4>								
+					}
+					<h6 className="card-subtitle mb-2 text-muted">${parseFloat(this.state.post["price"]).toFixed(2)}</h6>
+					<p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+				    <a href="#" class="card-link">Card link</a>
+				    <a href="#" class="card-link">Another link</a>
+				</div>
+				<div class="card-footer text-muted text-center">
+				    {this.state.post["date"]}
+				</div>
 			</div>
-		)
-	}
+		);
+	};
 }
 
 export default Post;
