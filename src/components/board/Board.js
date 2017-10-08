@@ -1,18 +1,34 @@
 import React, { Component } from 'react';
 import $ from 'jquery';
 import './Board.css';
+import {
+  BrowserRouter,
+  Route,
+  Link,
+  Redirect,
+  withRouter
+} from 'react-router-dom';
+import Loader from '../loader/Loader';
 
 class Board extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
             headers: ["Category", "Title", "Price", "Location", "Date", "Stat"],
-            data: []
+            data: [],
+            search: {
+            	"category": "",
+            	"title": "",
+            	"price": null,
+            	"location": "",
+            	"date": ""
+            }
         };
 	}
 	componentDidMount() {
 		let data = [
         	{
+        		"id": 1,
         		"category": "Sell",
         		"title": "I am selling this",
         		"price": 15.50,
@@ -24,6 +40,7 @@ class Board extends Component {
         		}
         	},
         	{
+        		"id": 2,
         		"category": "Sell",
         		"title": "I am selling this",
         		"price": 15.50,
@@ -35,6 +52,7 @@ class Board extends Component {
         		}
         	},
         	{
+        		"id": 3,
         		"category": "Sell",
         		"title": "I am selling this",
         		"price": 15.50,
@@ -46,6 +64,7 @@ class Board extends Component {
         		}
         	},
         	{
+        		"id": 4,
         		"category": "Sell",
         		"title": "I am selling this",
         		"price": 15.50,
@@ -72,20 +91,46 @@ class Board extends Component {
 		this.setState({ data: data });
 		console.log(this.state.data);
 	}
+	handleSearch(e) {
+		e.preventDefault();
+	}
 	render() {
 		return (
 			<div>
-				<div className="card">
-					<div className="card-header">
-						<ul className="nav">
-							<li className="nav-item mr-auto"><h3>Board</h3></li>
-							<button className="nav-item btn btn-primary" id="add-button" data-toggle="modal" data-target="#addPost">
-								<i className="fa fa-plus" aria-hidden="true"></i>
-							</button>
-						</ul>
+				<div className="jumbotron h-25">
+					<div className="container">
+						<h1 class="display-5">Buy / Sell</h1>
+						<p class="lead">Feel free to buy or sell.</p>
+						<form onSubmit={this.handleSearch.bind(this)}>
+							<div class="row">
+								<div class="col">
+									<select className="custom-select">
+										<option>Choose Category</option>
+										<option value="Buy">Buy</option>
+										<option value="Sell">Sell</option>
+									</select>
+								</div>
+								<div class="col">
+									<input type="text" class="form-control" placeholder="Title"/>
+								</div>
+								<div class="col">
+									<input type="number" className="form-control" placeholder="Max Price"/>
+								</div>
+								<div class="col">
+									<input type="text" className="form-control" placeholder="Location"/>
+								</div>
+								<div class="col">
+									<input type="date" className="form-control" placeholder="Date"/>
+								</div>
+								<button type="submit" className="btn btn-succuss">Search</button>
+							</div>
+						</form>
+						<button className="btn btn-primary btn-lg btn-block" id="add-button" data-toggle="modal" data-target="#addPost">
+							<i className="fa fa-plus" aria-hidden="true"></i>
+						</button>
 					</div>
-					<BoardTable headers={this.state.headers} data={this.state.data} />
 				</div>
+				<BoardTable headers={this.state.headers} data={this.state.data} />
 				<div className="modal fade" id="addPost" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 					<div className="modal-dialog" role="document">
 						<div className="modal-content">
@@ -115,7 +160,7 @@ class BoardTable extends Component {
 		return (
 			<div>
 				<table className="table table-sm table-hover">
-					<thead>
+					<thead className="thead-default">
 						<tr>
 							{this.props.headers.map(header => {
 								if (header == "Category") {
@@ -138,8 +183,11 @@ class BoardTable extends Component {
 						{this.props.data.map((row, index) => {
 							return (
 								<tr key={index}>
-									<td className="category">{row["category"]}</td>
-									<td className="title">{row["title"]}</td>
+									<td className="category">{row["category"] == "Sell" ? 
+										<span className="badge badge-success">{row["category"]}</span> :
+										<span className="badge badge-primary">{row["category"]}</span>
+									}</td>
+									<td className="title"><a href={"/boards/" + row["id"]}>{row["title"]}</a></td>
 									<td className="price">${parseFloat(row["price"]).toFixed(2)}</td>
 									<td className="location">{row["location"]}</td>
 									<td className="date">{row["date"]}</td>

@@ -10,11 +10,12 @@ import {
 } from 'react-router-dom';
 
 import Board from './components/board/Board';
+import Post from './components/post/Post';
 import Login from './components/login/Login';
 
 const Navbar = () => {
   return (
-    <nav className="navbar navbar-expand-md navbar-dark fixed-top bg-dark fixed-top">
+    <nav className="navbar navbar-expand-lg navbar-light bg-light fixed-top">
       <a className="navbar-brand" href="/">
         HOME
       </a>
@@ -33,7 +34,7 @@ const Navbar = () => {
       <div className="collapse navbar-collapse" id="navbarSupportedContent">
         <ul className="navbar-nav mr-auto">
           <li className="nav-item">
-            <a className="nav-link" href="/board">
+            <a className="nav-link" href="/boards">
               Board
             </a>
           </li>
@@ -128,9 +129,10 @@ class App extends Component {
     return (
       <div>
         <Navbar />
-        <div className="container-fluid">
+        <div className="">
           <Route exact path="/" component={Home} />
-          <Route exact path="/board" component={Board} />
+          <Route exact path="/boards" component={Board} />
+          <Route exact path="/boards/:id" component={Post} />
           <Route path="/login" component={Login} />
         </div>
       </div>

@@ -1,5 +1,14 @@
 #add-button {
-	margin-buttom: 10px;
+	/*margin-buttom: 10px;*/
+	margin-top: 10px;
+	bottom: 5px;
+}
+
+tr {
+	height: 20px;
+	width: 90%;
+	margin-left: 20px;
+	margin-right: 20px;
 }
 
 th, td {
@@ -11,12 +20,22 @@ td {
 	vertical-align: middle;
 }
 
+ul.nav {
+	height: 30px;
+}
+
+.jumbotron {
+	/*height: 250px;*/
+	margin-bottom: 0;
+}
+
 .category {
 	width: 5%;
 }
 
 .title {
 	width: 60%;
+	font-weight: bold;
 }
 
 .price {

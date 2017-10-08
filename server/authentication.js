@@ -53,6 +53,7 @@ module.exports = app => {
           } else {
             console.log('creating new user>>>>>>>>>>>>>>>>>>>>>');
             new User({
+              _id: new mongoose.Types.ObjectId(),
               googleId: profile.id,
               name: profile.name.givenName + ' ' + profile.name.familyName,
               username: '',
