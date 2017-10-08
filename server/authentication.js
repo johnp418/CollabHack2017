@@ -5,7 +5,7 @@ const GoogleStrategy = require("passport-google-oauth").OAuth2Strategy;
 // const session = require('express-session');
 const mongoose = require("mongoose");
 const authConfig = require("./config");
-const User = require('../models/User');
+const User = require('./models/User');
 
 
 require("./models/Post");
@@ -55,6 +55,7 @@ module.exports = app => {
           } else {
             console.log("creating new user>>>>>>>>>>>>>>>>>>>>>");
             new User({
+              _id: new mongoose.Types.ObjectId(),
               googleId: profile.id,
               name: profile.name.givenName + " " + profile.name.familyName,
               username: "",
