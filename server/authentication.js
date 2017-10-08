@@ -5,11 +5,11 @@ const GoogleStrategy = require("passport-google-oauth").OAuth2Strategy;
 // const session = require('express-session');
 const mongoose = require("mongoose");
 const authConfig = require("./config");
-mongoose.connect(authConfig.mongoURI);
-require("./models/User");
+const User = require('../models/User');
+
+
 require("./models/Post");
 
-const User = mongoose.model("User");
 
 // Facebook
 // passport.use(
