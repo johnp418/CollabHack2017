@@ -13,7 +13,7 @@ const { ensureAuthenticated, getAllUrlParams } = helpers;
 
 //RESTful API
 //READ POSTS
-postRoute.get('/api/posts', (req, res) => {
+postRoute.get('/', (req, res) => {
   Post.find({}, (err, posts) => {
     if (err) throw err;
     res.json(posts);
@@ -21,10 +21,11 @@ postRoute.get('/api/posts', (req, res) => {
 });
 
 //CREATE POST
-postRoute.post('/api/posts', ensureAuthenticated, (req, res) => {
+postRoute.post('/', ensureAuthenticated, (req, res) => {
   const { title, description, price, location } = req.body;
 
   User.findOne({ googleId: req.user.googleId }).then(user => {
+    console.log('post data = ', req.body);
     new Post({
       creator: user._id,
       title,
@@ -34,13 +35,24 @@ postRoute.post('/api/posts', ensureAuthenticated, (req, res) => {
       date: Date.now()
     })
       .save()
-      .then(post => console.log(post));
+      .then(post => {
+        console.log(' Successfully created post ', post);
+
+        post.user = user._id;
+
+        res.status(200).json(post);
+      })
+      .catch(error => {
+        console.log(' Error creating post ', error);
+        res.status(500).json({
+          error
+        });
+      });
   });
-  res.send('Post Successful');
 });
 
 //READ A POST
-postRoute.get('/api/posts/:postId', (req, res) => {
+postRoute.get('/:postId', (req, res) => {
   const { postId } = req.params;
   Post.findOne({ _id: postId }).then(post => {
     res.json(post);
@@ -48,7 +60,7 @@ postRoute.get('/api/posts/:postId', (req, res) => {
 });
 
 //UPDATE A POST
-postRoute.put('/api/posts/:postId', (req, res) => {
+postRoute.put('/:postId', (req, res) => {
   const { postId } = req.params;
   Post.findOneAndUpdate(
     { _id: postId },
@@ -62,7 +74,7 @@ postRoute.put('/api/posts/:postId', (req, res) => {
 });
 
 //DELETE A POST
-postRoute.delete('/api/posts/:postId', (req, res) => {
+postRoute.delete('/:postId', (req, res) => {
   const { postId } = req.params;
   Post.findOneandRemove({ _id: postId }, err => {
     if (err) res.send(err);

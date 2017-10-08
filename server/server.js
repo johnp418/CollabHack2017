@@ -46,7 +46,7 @@ app.use(
 authApp(app);
 userRouter(app);
 
-app.use('/posts', postRouter);
+app.use('/api/posts', postRouter);
 app.use('/comments', commentRouter);
 
 app.listen(port, err => {
