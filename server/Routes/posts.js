@@ -7,18 +7,23 @@ const User = require("../models/User");
 const Post = require("../models/Post");
 const postRoute = Express.Router();
 
-module.exports = app => {
-  app.get("/posts/:id", (res, req) => {});
+//Helper functions
+const helpers = require("./helpers");
+const { ensureAuthenticated, getAllUrlParams } = helpers;
 
-  app.get("/posts", (req, res) => {
-    User.findOne({ googleId: req.user.googleId }).then(user => {
-      res.send(user);
+//RESTful API
+module.exports = app => {
+  //READ POSTS
+  app.get("/api/posts", (req, res) => {
+    Post.find({}, (err, posts) => {
+      if (err) throw err;
+      res.json(posts);
     });
   });
 
-  app.post("/posts", (req, res) => {
+  //CREATE POST
+  app.post("/api/posts", ensureAuthenticated, (req, res) => {
     const { title, description, price, location } = req.body;
-    console.log("req.user", req.user);
 
     User.findOne({ googleId: req.user.googleId }).then(user => {
       new Post({
@@ -32,5 +37,38 @@ module.exports = app => {
         .save()
         .then(post => console.log(post));
     });
+    res.send("Post Successful");
+  });
+
+  //READ A POST
+  app.get("/api/posts/:postId", (req, res) => {
+    const { postId } = req.params;
+    Post.findOne({ _id: postId }).then(post => {
+      res.json(post);
+    });
+  });
+
+  //UPDATE A POST
+  app.put("/api/posts/:postId", (req, res) => {
+    const { postId } = req.params;
+    Post.findOneAndUpdate(
+      { _id: postId },
+      req.body,
+      { new: true },
+      (err, post) => {
+        if (err) res.send(err);
+        else res.json(post);
+      }
+    );
+  });
+
+  //DELETE A POST
+  app.delete("/api/posts/:postId", (req, res) => {
+    const { postId } = req.params;
+    Post.findOneandRemove({ _id: postId }, err => {
+      if (err) res.send(err);
+      else res.json({ message: "Post Deleted" });
+    });
+    res.send("POST DELETED");
   });
 };

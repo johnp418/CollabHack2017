@@ -7,6 +7,7 @@ const authConfig = require("./config");
 const app = new Express();
 const port = 5000;
 
+const userRouter = require('./Routes/users');
 const postRouter = require('./Routes/posts');
 
 mongoose.connect(authConfig.mongoURI);
@@ -22,8 +23,11 @@ app.use(Express.json());
 app.use(Express.urlencoded({ extended: false }));
 app.use(cookieSession({ maxAge: 1000 * 100000, keys: ["hi"] }));
 
+
 // Register passport
 authApp(app);
+
+userRouter(app);
 postRouter(app);
 
 

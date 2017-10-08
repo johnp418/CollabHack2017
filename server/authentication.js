@@ -96,21 +96,11 @@ module.exports = app => {
     (req, res) => {
       // Successful authentication, redirect home.
       console.log(" Successful authentication ");
-      res.redirect("/test");
+      res.redirect("/api/current_user");
     }
   );
 
   // app.use(express.session({ secret: 'addsfgd' }));
-
-  app.get("/test", (req, res) => {
-    console.log(" req.user ", req.user);
-    res.send(req.user);
-  });
-
-  app.get("/logout", (req, res) => {
-    req.logout();
-    res.redirect("/");
-  });
 
   // app.use(FacebookAuth);
 };
