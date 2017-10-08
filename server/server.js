@@ -1,15 +1,22 @@
-const Express = require('express');
-const path = require('path');
-const cookieSession = require('cookie-session');
-const authApp = require('./authentication');
+const Express = require("express");
+const mongoose = require("mongoose");
+const path = require("path");
+const cookieSession = require("cookie-session");
+const authApp = require("./authentication");
 
 const app = new Express();
 const port = 5000;
 
+// const keys = require("./config");
+// mongoose.connect(keys.mongoURI);
+// require("./models/User");
+// require("./models/Post");
+
+
 // Default settings
 app.use(Express.json());
 app.use(Express.urlencoded({ extended: true }));
-app.use(cookieSession({ maxAge: 1000 * 100000, keys: ['hi'] }));
+app.use(cookieSession({ maxAge: 1000 * 100000, keys: ["hi"] }));
 
 // Register passport
 authApp(app);
