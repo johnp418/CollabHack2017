@@ -21,7 +21,8 @@ module.exports = app => {
       {
         clientID: authConfig.google.clientID, //
         clientSecret: authConfig.google.clientSecret, //
-        callbackURL: 'http://localhost:5000/auth/google/callback'
+        callbackURL: 'http://localhost:5000/auth/google/callback',
+        proxy: true
       },
       (accessToken, refreshToken, profile, done) => {
         console.log('accessToken ', accessToken);
