@@ -78,7 +78,7 @@ module.exports = app => {
       // Successful authentication, redirect home.
       console.log(' Successful authentication ');
       // res.redirect('/api/current_user');
-      res.redirect('http://localhost:3000');
+      res.redirect('http://localhost:3000/posts');
     }
   );
 
