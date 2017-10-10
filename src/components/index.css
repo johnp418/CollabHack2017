@@ -1,0 +1,13 @@
+.container {
+  padding-right: 0;
+  padding-left: 0;
+}
+
+.navbar-header {
+  width: 150px;
+  text-align: center;
+}
+
+a.navbar-brand {
+  margin-left: 0px !important;
+}
